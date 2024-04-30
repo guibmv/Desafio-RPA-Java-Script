@@ -1,3 +1,79 @@
+const {Builder, Browser, By} = require("selenium-webdriver");
+
+(async function AutomacaoWeb(){
+    const enderecos = await GerarEnderecos();
+    const email = await GerarEmail();
+    const telefone = await GerarTelefone();
+    const cartao = await GerarCartao();
+    const nome = await GerarNomeCompleto();
+
+    let driver = await new Builder().forBrowser(Browser.CHROME).build();
+
+    await driver.get("https://onfly-rpa-forms-62njbv2kbq-uc.a.run.app/");
+
+    setTimeout( async () =>{
+        await driver.findElement(By.xpath("/html/body/div/div[2]/form/div[1]/div[1]/input")).sendKeys(nome.nome);
+    }, 3000);
+
+    setTimeout(async () => {
+        await driver.findElement(By.xpath("/html/body/div/div[2]/form/div[1]/div[2]/input")).sendKeys(telefone.telefone);
+    }), 3000;
+
+    setTimeout(async () => {
+        await driver.findElement(By.xpath("/html/body/div/div[2]/form/div[1]/div[3]/input")).sendKeys(email.email);
+    }), 3000;
+
+    setTimeout(async () => {
+        await driver.findElement(By.xpath("/html/body/div/div[2]/form/div[4]/button[2]")).click();
+    }), 3000;
+
+    setTimeout(async () => {
+        await driver.findElement(By.xpath("/html/body/div/div[2]/form/div[2]/div[1]/input")).sendKeys(enderecos.cep);
+    }), 3000;
+
+    setTimeout(async () => {
+        await driver.findElement(By.xpath("/html/body/div/div[2]/form/div[2]/div[2]/input")).sendKeys(enderecos.endereco + ", " + enderecos.numeroCasa);
+    }), 3000;
+
+    setTimeout(async () => {
+        await driver.findElement(By.xpath("/html/body/div/div[2]/form/div[2]/div[3]/input")).sendKeys(enderecos.cidade);
+    }), 3000;
+
+    setTimeout(async () => {
+        await driver.findElement(By.xpath("/html/body/div/div[2]/form/div[2]/div[4]/input")).sendKeys(enderecos.estado);
+    }), 3000;
+
+    setTimeout(async () => {
+        await driver.findElement(By.xpath("/html/body/div/div[2]/form/div[4]/button[2]")).click();
+    }), 3000;
+
+    setTimeout(async () => {
+        await driver.findElement(By.xpath("/html/body/div/div[2]/form/div[3]/div[1]/input")).sendKeys(nome.nome);
+    }), 3000;
+
+    setTimeout(async () => {
+        await driver.findElement(By.xpath("/html/body/div/div[2]/form/div[3]/div[2]/input")).sendKeys(cartao.numeroCartao);
+    }), 3000;
+
+    setTimeout(async () => {
+        await driver.findElement(By.xpath("/html/body/div/div[2]/form/div[3]/div[3]/input")).sendKeys(cartao.dataValidade);
+    }), 3000;
+
+    setTimeout(async () => {
+        await driver.findElement(By.xpath("/html/body/div/div[2]/form/div[3]/div[4]/input")).sendKeys(cartao.cvv);
+    }), 3000;
+
+    setTimeout(async () => {
+        await driver.findElement(By.xpath("/html/body/div/div[2]/form/div[4]/button[2]")).click();
+    }), 3000;
+
+    setTimeout(async () => {
+        await driver.quit();
+    }, 3000);
+    
+})();
+
+
 function GerarEnderecos(){
 
     const listaEnderecos = [{
@@ -47,14 +123,14 @@ function GerarEmail(){
 
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+\.[a-zA-Z]{2,}$/;
     if (regex.test(email) == true){
-        console.log("Email válido!")
+        return {
+            "email": email
+        }
     }
     else{
         console.log("Email inválido!")
     }
 }
-
-GerarEmail();
 
 function GerarTelefone(){
 
@@ -115,5 +191,39 @@ function GerarCartao(){
         numeroCartao: numeroCartao,
         dataValidade: dataValidade,
         cvv: cvv
+    }
+}
+                      
+function GerarNomeCompleto(){
+    const listaNomes = ["Emílio", "Karina", "Leandro", "Hércules", "Adriana", "Arnaldo", "Guilherme", "Luisa", "Juliana",
+    "João", "Felipe", "Gilmara", "David", "Helena", "Alberto", "Patrick", "Janice", "Margareth", "Gabriela", "Luiz", "Bianca",
+    "Alonso", "Carla", "Josué", "Ian"]
+
+    const listaSobreNomes = ["Ortega", "Da Silva", "Azevedo", "Batista", "Franco", "Oliveira", "Pacheco", "Ramires", "Fidalgo",
+    "Almeida", "França", "Furtado", "Galvão", "Bueno", "Vieira", "Perez", "Brito", "Mendes", "Domingues", "Delvalle", "Faria",
+    "Correia", "Pena", "Bittencourt", "Chaves"]
+
+    const quantidadeSobreNomes = Math.floor(Math.random() * 3) + 1; /* Código que gera um número aleatório de 1 a 3, onde vai ser definido quantos sobrenomes o nome completo vai ter */
+
+    const indicePrimeiroNome = Math.floor(Math.random() * listaNomes.length); /* Código que gera um índice aleatório para a lista "listaNomes"*/
+
+    const primeiroNomeAleatorio = listaNomes[indicePrimeiroNome]; /* Código que exibe o nome escolhido através do índice gerado aleatoriamente na variável "indicePrimeiroNome" */
+
+    const listaSobreNomesAleatorios = new Set(); /* Declara um Set vazio para armazenar os sobrenomes que será utilizado no nome completo */
+
+    /* Aqui abri uma condição while, que será executada até a quantidade de sobrenomes no meu set ser igual
+    a quantidade que foi gerada aleatoriamente na variável "quantidadeSobreNomes" */
+
+    while (listaSobreNomesAleatorios.size < quantidadeSobreNomes){
+        const indiceSobreNome = Math.floor(Math.random() * listaSobreNomes.length);
+        listaSobreNomesAleatorios.add(listaSobreNomes[indiceSobreNome]);
+    }
+
+    const listaSobreNomesAleatoriosArray = Array.from(listaSobreNomesAleatorios); /* Transformando o set em um array, lembrando que foi usado set anteriormente e não um array apenas para validar se um sobrenome já havia sido alocado ou não */
+
+    const nomeCompleto = primeiroNomeAleatorio + " " + listaSobreNomesAleatoriosArray.join(" ");
+    
+    return {
+        "nome": nomeCompleto
     }
 }
