@@ -42,6 +42,20 @@ function GerarEnderecos(){
     }
 }
 
+function GerarEmail(){
+    const email = "usuario@example.org";
+
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+\.[a-zA-Z]{2,}$/;
+    if (regex.test(email) == true){
+        console.log("Email válido!")
+    }
+    else{
+        console.log("Email inválido!")
+    }
+}
+
+GerarEmail();
+
 function GerarTelefone(){
 
     numero = [];
