@@ -1,0 +1,52 @@
+{
+    "endereços": [
+        {
+            "cep": "13216000",
+            "endereço": "Avenida São João",
+            "cidade": "Jundiaí",
+            "estado": "SP"
+        },
+        {
+            "cep": "30120060",
+            "endereço": "Rua dos Carijós",
+            "cidade": "Belo Horizonte",
+            "estado": "MG"
+        },
+        {
+            "cep": "75802095",
+            "endereço": "Avenida Tocantins",
+            "cidade": "Jataí",
+            "estado": "GO"
+        },
+        {
+            "cep": "04144070",
+            "endereço": "Rua Pereira Estéfano",
+            "cidade": "São Paulo",
+            "estado": "SP"
+        },
+        {
+            "cep": "80520560",
+            "endereço": "Rua Carlos Augusto Cornelsen",
+            "cidade": "Curitiba",
+            "estado": "PR"
+        },
+        {
+            "cep": "79002290",
+            "endereço": "Rua da Imprensa",
+            "cidade": "Campo Grande",
+            "estado": "MS"
+        },
+        {
+            "cep": "29946490",
+            "endereço": "Avenida Esbertalina Barbosa Damiani",
+            "cidade": "São Mateus",
+            "estado": "ES"
+        },
+        {
+            "cep": "68700216",
+            "endereço": "Travessa Antônio Ferreira",
+            "cidade": "Capanema",
+            "estado": "PA"
+        }
+    ]
+}
