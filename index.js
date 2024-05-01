@@ -1,78 +1,116 @@
 const {Builder, Browser, By} = require("selenium-webdriver");
+const chrome = require("selenium-webdriver/chrome");
+const readlineSync = require("readline-sync");
 
-(async function AutomacaoWeb(){
+async function Main(){
+    while (true){
+        console.log("---------------------------------------------------------------------");
+        console.log("|                                                                   |");
+        console.log("|                   *** Selecione uma opção ***                     |");
+        console.log("|                                                                   |");
+        console.log("| 1. Automação Web (Preenchimento de formulário) + Manipulação DOM  |");
+        console.log("|                                                                   |");
+        console.log("| 0. Sair                                                           |");
+        console.log("|                                                                   |");
+        console.log("---------------------------------------------------------------------");
+        const opcao = readlineSync.question("Digite um valor: ");
+            if (opcao == 0){
+                console.log("Ok, saindo...");
+                break;
+            }
+            else if (opcao == 1){
+                AutomacaoWeb();
+                break;
+            }
+            else {
+                console.log("Opção inválida. Por favor, tente novamente.")
+                Main();
+            }
+            console.clear();
+    }
+}
+
+Main();
+
+async function AutomacaoWeb(){
     const enderecos = await GerarEnderecos();
     const email = await GerarEmail();
     const telefone = await GerarTelefone();
     const cartao = await GerarCartao();
     const nome = await GerarNomeCompleto();
 
-    let driver = await new Builder().forBrowser(Browser.CHROME).build();
+    let chromeOptions = new chrome.Options();
+    chromeOptions.addArguments("--start-maximized")
+    let driver = await new Builder().forBrowser(Browser.CHROME).setChromeOptions(chromeOptions).build();
 
     await driver.get("https://onfly-rpa-forms-62njbv2kbq-uc.a.run.app/");
 
-    setTimeout( async () =>{
-        await driver.findElement(By.xpath("/html/body/div/div[2]/form/div[1]/div[1]/input")).sendKeys(nome.nome);
-    }, 3000);
+    await timer(3000);
+    await driver.findElement(By.xpath("/html/body/div/div[2]/form/div[1]/div[1]/input")).sendKeys(nome.nome);
 
-    setTimeout(async () => {
-        await driver.findElement(By.xpath("/html/body/div/div[2]/form/div[1]/div[2]/input")).sendKeys(telefone.telefone);
-    }), 3000;
+    await timer(3000);
+    await driver.findElement(By.xpath("/html/body/div/div[2]/form/div[1]/div[2]/input")).sendKeys(telefone.telefone);
 
-    setTimeout(async () => {
-        await driver.findElement(By.xpath("/html/body/div/div[2]/form/div[1]/div[3]/input")).sendKeys(email.email);
-    }), 3000;
+    await timer(3000);
+    await driver.findElement(By.xpath("/html/body/div/div[2]/form/div[1]/div[3]/input")).sendKeys(email.email);
 
-    setTimeout(async () => {
-        await driver.findElement(By.xpath("/html/body/div/div[2]/form/div[4]/button[2]")).click();
-    }), 3000;
+    await timer(3000);
+    await driver.findElement(By.xpath("/html/body/div/div[2]/form/div[4]/button[2]")).click();
 
-    setTimeout(async () => {
-        await driver.findElement(By.xpath("/html/body/div/div[2]/form/div[2]/div[1]/input")).sendKeys(enderecos.cep);
-    }), 3000;
+    await timer(3000);
+    await driver.findElement(By.xpath("/html/body/div/div[2]/form/div[2]/div[1]/input")).sendKeys(enderecos.cep);
 
-    setTimeout(async () => {
-        await driver.findElement(By.xpath("/html/body/div/div[2]/form/div[2]/div[2]/input")).sendKeys(enderecos.endereco + ", " + enderecos.numeroCasa);
-    }), 3000;
+    await timer(3000);
+    await driver.findElement(By.xpath("/html/body/div/div[2]/form/div[2]/div[2]/input")).sendKeys(enderecos.endereco + ", " + enderecos.numero);
 
-    setTimeout(async () => {
-        await driver.findElement(By.xpath("/html/body/div/div[2]/form/div[2]/div[3]/input")).sendKeys(enderecos.cidade);
-    }), 3000;
+    await timer(3000);
+    await driver.findElement(By.xpath("/html/body/div/div[2]/form/div[2]/div[3]/input")).sendKeys(enderecos.cidade);
 
-    setTimeout(async () => {
-        await driver.findElement(By.xpath("/html/body/div/div[2]/form/div[2]/div[4]/input")).sendKeys(enderecos.estado);
-    }), 3000;
+    await timer(3000);
+    await driver.findElement(By.xpath("/html/body/div/div[2]/form/div[2]/div[4]/input")).sendKeys(enderecos.estado);
 
-    setTimeout(async () => {
-        await driver.findElement(By.xpath("/html/body/div/div[2]/form/div[4]/button[2]")).click();
-    }), 3000;
+    await timer(3000);
+    await driver.findElement(By.xpath("/html/body/div/div[2]/form/div[4]/button[2]")).click();
+   
+    await timer(3000);
+    await driver.findElement(By.xpath("/html/body/div/div[2]/form/div[3]/div[1]/input")).sendKeys(nome.nome);
 
-    setTimeout(async () => {
-        await driver.findElement(By.xpath("/html/body/div/div[2]/form/div[3]/div[1]/input")).sendKeys(nome.nome);
-    }), 3000;
+    await timer(3000);
+    await driver.findElement(By.xpath("/html/body/div/div[2]/form/div[3]/div[2]/input")).sendKeys(cartao.numeroCartao);
 
-    setTimeout(async () => {
-        await driver.findElement(By.xpath("/html/body/div/div[2]/form/div[3]/div[2]/input")).sendKeys(cartao.numeroCartao);
-    }), 3000;
-
-    setTimeout(async () => {
-        await driver.findElement(By.xpath("/html/body/div/div[2]/form/div[3]/div[3]/input")).sendKeys(cartao.dataValidade);
-    }), 3000;
-
-    setTimeout(async () => {
-        await driver.findElement(By.xpath("/html/body/div/div[2]/form/div[3]/div[4]/input")).sendKeys(cartao.cvv);
-    }), 3000;
-
-    setTimeout(async () => {
-        await driver.findElement(By.xpath("/html/body/div/div[2]/form/div[4]/button[2]")).click();
-    }), 3000;
-
-    setTimeout(async () => {
-        await driver.quit();
-    }, 3000);
+    await timer(3000);
+    await driver.findElement(By.xpath("/html/body/div/div[2]/form/div[3]/div[3]/input")).sendKeys(cartao.dataValidade);
     
-})();
+    await timer(3000);
+    await driver.findElement(By.xpath("/html/body/div/div[2]/form/div[3]/div[4]/input")).sendKeys(cartao.cvv);
 
+    await timer(3000);
+    await driver.findElement(By.xpath("/html/body/div/div[2]/form/div[4]/button[2]")).click();
+
+    await timer(1000);
+    const elementos = await driver.findElements(By.tagName("p"));
+    try{
+        for (const elemento of elementos){
+            const texto = await elemento.getText();
+    
+            const novoTexto = "Texto alterado";
+    
+            await driver.executeScript(`arguments[0].innerText = "${novoTexto}"`, elemento);
+        }
+    }
+    catch{
+        console.log("Erro inesperado.")
+    }
+
+    await timer(10000);
+    await driver.quit();
+
+    async function timer(ms){
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    console.log("Automação realizada com sucesso!!!");
+}
 
 function GerarEnderecos(){
 
@@ -119,9 +157,9 @@ function GerarEnderecos(){
 }
 
 function GerarEmail(){
-    const email = "usuario@example.org";
+    const email = "usuario@example.com";
 
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+\.[a-zA-Z]{2,}$/;
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (regex.test(email) == true){
         return {
             "email": email
