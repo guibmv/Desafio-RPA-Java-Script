@@ -1,93 +1,156 @@
 const {Builder, Browser, By} = require("selenium-webdriver");
 const chrome = require("selenium-webdriver/chrome");
+const firefox = require("selenium-webdriver/firefox");
+const edge = require("selenium-webdriver/edge")
 const readlineSync = require("readline-sync");
+
+/* ---------------------------- // ----------------------------
+    Função que exibe as opções para o usuário no console, 
+    quando escolhido a opção 1, é executado a RPA.
+   ---------------------------- // ---------------------------- */
 
 async function Main(){
     while (true){
-        console.log("---------------------------------------------------------------------");
-        console.log("|                                                                   |");
-        console.log("|                   *** Selecione uma opção ***                     |");
-        console.log("|                                                                   |");
-        console.log("| 1. Automação Web (Preenchimento de formulário) + Manipulação DOM  |");
-        console.log("|                                                                   |");
-        console.log("| 0. Sair                                                           |");
-        console.log("|                                                                   |");
-        console.log("---------------------------------------------------------------------");
+        console.clear();
+        console.log("-----------------------------------------------------------------------------------");
+        console.log("|                                                                                 |");
+        console.log("|                        *** Selecione uma opção ***                              |");
+        console.log("|                                                                                 |");
+        console.log("| 1. Automação Web Preenchimento de formulário + Manipulação DOM (Usando Chrome)  |");
+        console.log("|                                                                                 |");
+        console.log("| 2. Automação Web Preenchimento de formulário + Manipulação DOM (Usando Firefox) |");
+        console.log("|                                                                                 |");
+        console.log("| 3. Automação Web Preenchimento de formulário + Manipulação DOM (Usando Edge)    |");
+        console.log("|                                                                                 |");
+        console.log("| 0. Sair                                                                         |");
+        console.log("|                                                                                 |");
+        console.log("-----------------------------------------------------------------------------------");
         const opcao = readlineSync.question("Digite um valor: ");
             if (opcao == 0){
                 console.log("Ok, saindo...");
                 break;
             }
             else if (opcao == 1){
-                AutomacaoWeb();
+                Tarefa1(1);
+                break;
+            }
+            else if (opcao ==2){
+                Tarefa1(2);
+                break;
+            }
+            else if (opcao == 3){
+                Tarefa1(3);
                 break;
             }
             else {
-                console.log("Opção inválida. Por favor, tente novamente.")
-                Main();
+                console.log("Opção inválida. Por favor, tente novamente.");
+                await timer(1000);
             }
             console.clear();
+
+            async function timer(ms){
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
     }
 }
 
+// Chamada para a função Main().
 Main();
 
-async function AutomacaoWeb(){
+/* ---------------------------- // ----------------------------
+    Função que executa a Tarefa 1, usando a biblioteca selenium 
+    para fazer a automação, preenchendo o formulário com os dados 
+    que foram gerados pelas funções, em seguida a função executa 
+    a Tarefa 2, onde manipula o DOM do site para trocar as tags <p> 
+    para "Texto alterado".
+   ---------------------------- // ---------------------------- */
+
+async function Tarefa1(navegador){
+
+    // Chamada das funções
     const enderecos = await GerarEnderecos();
     const email = await GerarEmail();
     const telefone = await GerarTelefone();
     const cartao = await GerarCartao();
     const nome = await GerarNomeCompleto();
 
-    let chromeOptions = new chrome.Options();
-    chromeOptions.addArguments("--start-maximized")
-    let driver = await new Builder().forBrowser(Browser.CHROME).setChromeOptions(chromeOptions).build();
+    let driver;
+
+    if (navegador == 1){
+        let chromeOptions = new chrome.Options();
+        chromeOptions.addArguments("--start-maximized")
+        driver = await new Builder().forBrowser(Browser.CHROME).setChromeOptions(chromeOptions).build();
+    }
+    else if(navegador == 2){
+        let firefoxOptions = new firefox.Options();
+        driver = await new Builder().forBrowser(Browser.FIREFOX).setFirefoxOptions(firefoxOptions).build();
+        await driver.manage().window().maximize();
+    }
+    else if(navegador == 3){
+        let edgeOptions = new edge.Options();
+        driver = await new Builder().forBrowser(Browser.EDGE).setEdgeOptions(edgeOptions).build();
+        await driver.manage().window().maximize();
+    }
 
     await driver.get("https://onfly-rpa-forms-62njbv2kbq-uc.a.run.app/");
 
-    await timer(3000);
+    await driver.sleep(2000);
     await driver.findElement(By.xpath("/html/body/div/div[2]/form/div[1]/div[1]/input")).sendKeys(nome.nome);
 
-    await timer(3000);
+    await driver.sleep(2000);
     await driver.findElement(By.xpath("/html/body/div/div[2]/form/div[1]/div[2]/input")).sendKeys(telefone.telefone);
 
-    await timer(3000);
+    await driver.sleep(2000);
     await driver.findElement(By.xpath("/html/body/div/div[2]/form/div[1]/div[3]/input")).sendKeys(email.email);
 
-    await timer(3000);
+    await driver.sleep(2000);
     await driver.findElement(By.xpath("/html/body/div/div[2]/form/div[4]/button[2]")).click();
 
-    await timer(3000);
+    await driver.sleep(2000);
     await driver.findElement(By.xpath("/html/body/div/div[2]/form/div[2]/div[1]/input")).sendKeys(enderecos.cep);
 
-    await timer(3000);
+    await driver.sleep(2000);
     await driver.findElement(By.xpath("/html/body/div/div[2]/form/div[2]/div[2]/input")).sendKeys(enderecos.endereco + ", " + enderecos.numero);
 
-    await timer(3000);
+    await driver.sleep(2000);
     await driver.findElement(By.xpath("/html/body/div/div[2]/form/div[2]/div[3]/input")).sendKeys(enderecos.cidade);
 
-    await timer(3000);
+    await driver.sleep(2000);
     await driver.findElement(By.xpath("/html/body/div/div[2]/form/div[2]/div[4]/input")).sendKeys(enderecos.estado);
 
-    await timer(3000);
+    await driver.sleep(2000);
     await driver.findElement(By.xpath("/html/body/div/div[2]/form/div[4]/button[2]")).click();
    
-    await timer(3000);
+    await driver.sleep(2000);
     await driver.findElement(By.xpath("/html/body/div/div[2]/form/div[3]/div[1]/input")).sendKeys(nome.nome);
 
-    await timer(3000);
+    await driver.sleep(2000);
     await driver.findElement(By.xpath("/html/body/div/div[2]/form/div[3]/div[2]/input")).sendKeys(cartao.numeroCartao);
 
-    await timer(3000);
+    await driver.sleep(2000);
     await driver.findElement(By.xpath("/html/body/div/div[2]/form/div[3]/div[3]/input")).sendKeys(cartao.dataValidade);
     
-    await timer(3000);
+    await driver.sleep(2000);
     await driver.findElement(By.xpath("/html/body/div/div[2]/form/div[3]/div[4]/input")).sendKeys(cartao.cvv);
 
-    await timer(3000);
-    await driver.findElement(By.xpath("/html/body/div/div[2]/form/div[4]/button[2]")).click();
+    await driver.sleep(2000);
+    await driver.findElement(By.xpath("/html/body/div/div[2]/form/div[4]/button[2]")).click();  
 
-    await timer(1000);
+    await driver.sleep(2000);
+    await Tarefa2(driver);
+
+    await driver.sleep(8000);
+    await driver.quit();
+
+    console.log("Automação realizada com sucesso!!!");
+}
+
+/* ---------------------------- // ----------------------------
+    Função que executa a Tarefa 2, pois quando chamada altera os
+    elementos <p>, para "Texto alterado".
+   ---------------------------- // ---------------------------- */
+
+async function Tarefa2(driver){
     const elementos = await driver.findElements(By.tagName("p"));
     try{
         for (const elemento of elementos){
@@ -101,16 +164,12 @@ async function AutomacaoWeb(){
     catch{
         console.log("Erro inesperado.")
     }
-
-    await timer(10000);
-    await driver.quit();
-
-    async function timer(ms){
-        return new Promise(resolve => setTimeout(resolve, ms));
-    }
-
-    console.log("Automação realizada com sucesso!!!");
 }
+
+/* ---------------------------- // ----------------------------
+    Função que sorteia um endereço aleatório, de acordo com os
+    endereços que estão contidos na listaEnderecos.
+   ---------------------------- // ---------------------------- */
 
 function GerarEnderecos(){
 
@@ -156,10 +215,14 @@ function GerarEnderecos(){
     }
 }
 
-function GerarEmail(){
-    const email = "usuario@example.com";
+/* ---------------------------- // ----------------------------
+    Função que valida o email usando regex.
+   ---------------------------- // ---------------------------- */
 
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+function GerarEmail(){
+    const email = "usuario@example.com.br";
+
+    const regex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
     if (regex.test(email) == true){
         return {
             "email": email
@@ -169,6 +232,10 @@ function GerarEmail(){
         console.log("Email inválido!")
     }
 }
+/* ---------------------------- // ----------------------------
+    Função que gera números aleatórios, simulando um número de
+    telefone. Os primeiros números sempre serão "319".
+---------------------------- // ---------------------------- */
 
 function GerarTelefone(){
 
@@ -192,6 +259,12 @@ function GerarTelefone(){
     }
 }
 
+/* ---------------------------- // ----------------------------
+    Função que gera números aleatórios, simulando os números de
+    um cartão, também gera uma data de validade válida e um cvv
+    aleatório.
+   ---------------------------- // ---------------------------- */
+
 function GerarCartao(){
     //nomeTitular = GerarNome()
 
@@ -212,7 +285,7 @@ function GerarCartao(){
     
     const mes = "0" + (Math.floor(Math.random() * 9) + 1);
 
-    const ano = "20" + (Math.floor(Math.random() * 10) + 24);
+    const ano = "20" + (Math.floor(Math.random() * 10) + 25);
 
     const dataValidade = mes + "/" + ano;
 
@@ -231,7 +304,12 @@ function GerarCartao(){
         cvv: cvv
     }
 }
-                      
+
+/* ---------------------------- // ----------------------------
+    Função que sorteia nomes aleatórios, de acordo com as 
+    listas de nomes e sobrenomes.
+   ---------------------------- // ---------------------------- */
+
 function GerarNomeCompleto(){
     const listaNomes = ["Emílio", "Karina", "Leandro", "Hércules", "Adriana", "Arnaldo", "Guilherme", "Luisa", "Juliana",
     "João", "Felipe", "Gilmara", "David", "Helena", "Alberto", "Patrick", "Janice", "Margareth", "Gabriela", "Luiz", "Bianca",
@@ -241,13 +319,13 @@ function GerarNomeCompleto(){
     "Almeida", "França", "Furtado", "Galvão", "Bueno", "Vieira", "Perez", "Brito", "Mendes", "Domingues", "Delvalle", "Faria",
     "Correia", "Pena", "Bittencourt", "Chaves"]
 
-    const quantidadeSobreNomes = Math.floor(Math.random() * 3) + 1; /* Código que gera um número aleatório de 1 a 3, onde vai ser definido quantos sobrenomes o nome completo vai ter */
+    const quantidadeSobreNomes = Math.floor(Math.random() * 3) + 1; // Variável que gera um número aleatório de 1 a 3, onde vai ser definido quantos sobrenomes o nome completo vai ter
 
-    const indicePrimeiroNome = Math.floor(Math.random() * listaNomes.length); /* Código que gera um índice aleatório para a lista "listaNomes"*/
+    const indicePrimeiroNome = Math.floor(Math.random() * listaNomes.length); // Variável que gera um índice aleatório para a lista "listaNomes"
 
-    const primeiroNomeAleatorio = listaNomes[indicePrimeiroNome]; /* Código que exibe o nome escolhido através do índice gerado aleatoriamente na variável "indicePrimeiroNome" */
+    const primeiroNomeAleatorio = listaNomes[indicePrimeiroNome]; // Variável que aloca o nome escolhido através do índice gerado aleatoriamente na variável "indicePrimeiroNome"
 
-    const listaSobreNomesAleatorios = new Set(); /* Declara um Set vazio para armazenar os sobrenomes que será utilizado no nome completo */
+    const listaSobreNomesAleatorios = new Set(); // Declara um Set vazio para armazenar os sobrenomes que serão utilizados no nome completo
 
     /* Aqui abri uma condição while, que será executada até a quantidade de sobrenomes no meu set ser igual
     a quantidade que foi gerada aleatoriamente na variável "quantidadeSobreNomes" */
@@ -257,7 +335,7 @@ function GerarNomeCompleto(){
         listaSobreNomesAleatorios.add(listaSobreNomes[indiceSobreNome]);
     }
 
-    const listaSobreNomesAleatoriosArray = Array.from(listaSobreNomesAleatorios); /* Transformando o set em um array, lembrando que foi usado set anteriormente e não um array apenas para validar se um sobrenome já havia sido alocado ou não */
+    const listaSobreNomesAleatoriosArray = Array.from(listaSobreNomesAleatorios); // Transformando o set em um array, lembrando que foi usado set anteriormente e não um array apenas para validar se um sobrenome já havia sido alocado ou não
 
     const nomeCompleto = primeiroNomeAleatorio + " " + listaSobreNomesAleatoriosArray.join(" ");
     
