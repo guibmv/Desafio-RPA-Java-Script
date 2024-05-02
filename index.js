@@ -220,11 +220,11 @@ function GerarEnderecos(){
    ---------------------------- // ---------------------------- */
 
 function GerarEmail(){
-    const email = "usuario@example.com.br";
+    const email = "usuario@exemplo.com";
 
-    const regex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+    const regex = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/i;
     if (regex.test(email) == true){
-        return {
+        return{
             "email": email
         }
     }
@@ -232,6 +232,7 @@ function GerarEmail(){
         console.log("Email inválido!")
     }
 }
+
 /* ---------------------------- // ----------------------------
     Função que gera números aleatórios, simulando um número de
     telefone. Os primeiros números sempre serão "319".
