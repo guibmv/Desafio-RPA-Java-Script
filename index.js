@@ -320,23 +320,20 @@ function GerarNomeCompleto(){
     "Almeida", "França", "Furtado", "Galvão", "Bueno", "Vieira", "Perez", "Brito", "Mendes", "Domingues", "Delvalle", "Faria",
     "Correia", "Pena", "Bittencourt", "Chaves"]
 
-    const quantidadeSobreNomes = Math.floor(Math.random() * 3) + 1; // Variável que gera um número aleatório de 1 a 3, onde vai ser definido quantos sobrenomes o nome completo vai ter
+    const quantidadeSobreNomes = Math.floor(Math.random() * 3) + 1; 
 
-    const indicePrimeiroNome = Math.floor(Math.random() * listaNomes.length); // Variável que gera um índice aleatório para a lista "listaNomes"
+    const indicePrimeiroNome = Math.floor(Math.random() * listaNomes.length);
 
-    const primeiroNomeAleatorio = listaNomes[indicePrimeiroNome]; // Variável que aloca o nome escolhido através do índice gerado aleatoriamente na variável "indicePrimeiroNome"
+    const primeiroNomeAleatorio = listaNomes[indicePrimeiroNome];
 
-    const listaSobreNomesAleatorios = new Set(); // Declara um Set vazio para armazenar os sobrenomes que serão utilizados no nome completo
-
-    /* Aqui abri uma condição while, que será executada até a quantidade de sobrenomes no meu set ser igual
-    a quantidade que foi gerada aleatoriamente na variável "quantidadeSobreNomes" */
+    const listaSobreNomesAleatorios = new Set();
 
     while (listaSobreNomesAleatorios.size < quantidadeSobreNomes){
         const indiceSobreNome = Math.floor(Math.random() * listaSobreNomes.length);
         listaSobreNomesAleatorios.add(listaSobreNomes[indiceSobreNome]);
     }
 
-    const listaSobreNomesAleatoriosArray = Array.from(listaSobreNomesAleatorios); // Transformando o set em um array, lembrando que foi usado set anteriormente e não um array apenas para validar se um sobrenome já havia sido alocado ou não
+    const listaSobreNomesAleatoriosArray = Array.from(listaSobreNomesAleatorios);
 
     const nomeCompleto = primeiroNomeAleatorio + " " + listaSobreNomesAleatoriosArray.join(" ");
     
