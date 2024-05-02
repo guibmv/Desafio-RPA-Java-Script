@@ -267,7 +267,6 @@ function GerarTelefone(){
    ---------------------------- // ---------------------------- */
 
 function GerarCartao(){
-    //nomeTitular = GerarNome()
 
     const gerarNumeroCartao = [];
 
@@ -317,10 +316,10 @@ function GerarNomeCompleto(){
     "Alonso", "Carla", "Josué", "Ian"]
 
     const listaSobreNomes = ["Ortega", "Da Silva", "Azevedo", "Batista", "Franco", "Oliveira", "Pacheco", "Ramires", "Fidalgo",
-    "Almeida", "França", "Furtado", "Galvão", "Bueno", "Vieira", "Perez", "Brito", "Mendes", "Domingues", "Delvalle", "Faria",
+    "Almeida", "Furtado", "Galvão", "Bueno", "Vieira", "Perez", "Brito", "Mendes", "Domingues", "Delvalle", "Faria",
     "Correia", "Pena", "Bittencourt", "Chaves"]
 
-    const quantidadeSobreNomes = Math.floor(Math.random() * 3) + 1; 
+    const quantidadeSobreNomes = Math.floor(Math.random() * 3) + 1;
 
     const indicePrimeiroNome = Math.floor(Math.random() * listaNomes.length);
 
