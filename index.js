@@ -60,7 +60,7 @@ Main();
 /* ---------------------------- // ----------------------------
     Função que executa a Tarefa 1, usando a biblioteca selenium 
     para fazer a automação, preenchendo o formulário com os dados 
-    que foram gerados pelas funções, em seguida a função executa 
+    que foram gerados pelas funções e em seguida executando
     a Tarefa 2, onde manipula o DOM do site para trocar as tags <p> 
     para "Texto alterado".
    ---------------------------- // ---------------------------- */
